@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Joseph Blackwell — Writer</title>
+    <meta name="description" content="Short fiction by Joseph Blackwell. Stories spanning sci-fi, dark fantasy, literary fiction, and the spaces in between." />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav class="nav" id="nav">
+    <div class="nav-inner">
+        <div class="nav-logo" onclick="navigate('home')">Joseph Blackwell</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home" data-page="home" class="active">Home</a></li>
+            <li><a href="#writings" data-page="writings">Writing</a></li>
+            <li><a href="#updates" data-page="updates">Updates</a></li>
+            <li><a href="#about" data-page="about">About</a></li>
+        </ul>
+        <button class="nav-menu-btn" id="menuBtn" aria-label="Toggle menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <line x1="4" y1="7" x2="20" y2="7"/>
+                <line x1="4" y1="12" x2="20" y2="12"/>
+                <line x1="4" y1="17" x2="20" y2="17"/>
+            </svg>
+        </button>
+    </div>
+</nav>
+
+<main>
+
+    <!-- HOME -->
+    <div id="page-home" class="page active">
+        <section class="section" id="home-featured">
+            <div class="section-header">
+                <h2 class="section-title">Featured</h2>
+                <a href="#writings" class="section-link" onclick="navigate('writings')">View all →</a>
+            </div>
+            <div class="item-list" id="featuredList"></div>
+        </section>
+
+        <section class="section" id="home-updates">
+            <div class="section-header">
+                <h2 class="section-title">Latest</h2>
+                <a href="#updates" class="section-link" onclick="navigate('updates')">All updates →</a>
+            </div>
+            <div class="item-list" id="homeUpdatesList"></div>
+        </section>
+    </div>
+
+    <!-- WRITINGS -->
+    <div id="page-writings" class="page">
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">Writings</h2>
+            </div>
+            <div id="writingsByCategory"></div>
+        </section>
+    </div>
+
+    <!-- UPDATES -->
+    <div id="page-updates" class="page">
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">Updates</h2>
+            </div>
+            <div class="item-list" id="updatesFullList"></div>
+            <div class="load-more-wrap" id="loadMoreWrap" style="display:none;">
+                <button class="btn btn-ghost" id="loadMoreBtn">Load more</button>
+            </div>
+            <div id="updateSkeletons"></div>
+        </section>
+    </div>
+
+    <!-- ABOUT -->
+    <div id="page-about" class="page">
+        <section class="about-container">
+            <div class="about-header">
+                <div class="about-avatar">JB</div>
+                <h1 class="about-name">Joseph Blackwell</h1>
+                <p class="about-tagline">Writer & storyteller</p>
+            </div>
+            <div class="about-stat-grid" id="aboutStats"></div>
+            <div class="about-content">
+                <p>
+                    I write stories that live in the margins — the quiet spaces between what's said and
+                    what's meant, between what we remember and what actually happened. My work spans
+                    science fiction, dark fantasy, literary horror, and the occasional love story
+                    disguised as something else entirely.
+                </p>
+                <p>
+                    Every piece published here is free to read. No paywalls, no algorithms, no
+                    engagement metrics. Just words arranged in ways I hope will make you feel
+                    something — even if that something is uncomfortable.
+                </p>
+                <p>
+                    I believe stories are how we rehearse being human. They let us inhabit lives we'll
+                    never live, feel things we might never feel, and sit with questions that don't have
+                    clean answers. That's the work I'm trying to do here.
+                </p>
+                <p>
+                    If a story stays with you after you close the page, then it did what it was supposed to.
+                </p>
+            </div>
+        </section>
+    </div>
+
+</main>
+
+<!-- Reader Overlay -->
+<div class="reader-overlay" id="readerOverlay">
+    <div class="reader" id="readerContent">
+        <button class="reader-close" id="readerClose" aria-label="Close">&#x2715;</button>
+        
+        <!-- Book Frontmatter -->
+        <h1 class="reader-title" id="readerTitle"></h1>
+        <div class="reader-meta" id="readerMeta"></div>
+        <div class="reader-byline" id="readerByline"></div>
+        
+        <!-- Inline Index -->
+        <div id="readerTocContainer" style="display: none; margin-bottom: 60px;">
+            <div class="toc-title" style="text-align: center; font-family: var(--font-display); font-size: 1.5rem; color: var(--accent); margin-bottom: 24px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; font-style: italic;">Contents</div>
+            <div class="reader-toc" id="readerToc" style="display: flex; flex-direction: column; align-items: center; gap: 12px;"></div>
+            <hr style="border: none; text-align: center; margin: 48px 0;">
+        </div>
+
+        <!-- Story Body -->
+        <div class="reader-body" id="readerBody"></div>
+
+    </div>
+</div>
+
+<footer class="footer">
+    <div style="margin-bottom: 16px;">
+        <a href="https://www.instagram.com/josephblackwell40/" target="_blank" rel="noopener" aria-label="Instagram" style="color: var(--text-muted); transition: color 0.3s; display: inline-block;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+        </a>
+    </div>
+    &copy; 2026 Joseph Blackwell. All rights reserved.
+</footer>
+
+<!-- Embedded data -->
+<script id="siteData" type="application/json">
+{"stories":[{"name":"Project Library","filename":"Project Library.md","title":"Project Library","date":"2026-07-14","tags":["Novel","Fiction","LGBTQ"],"featured":true,"excerpt":"A LGBTQ+ Story about the love of two girls in a religious state.","cover":null,"body":"# Comming Feburary 2028 \r\n\r\n---\r\n\r\n© Joseph Blackwell. All rights reserved. This story may not be reproduced, distributed, or transmitted in any form without prior written permission."},{"name":"The Murder of Mr Tyagi","filename":"The Murder of Mr Tyagi.md","title":"The Murder of Mr Tyagi","date":"2026-07-14","tags":["Fiction","Novel","Murder Mystery"],"featured":true,"excerpt":"Mr Tyagi get murdererd but who did it and why.","cover":null,"body":"# Comming in March 2027\r\n\r\n\r\nThe Story is about the murder of Mr Tyagi who gets murderd and the question is who murdered him and why and what for , for money, for love, or something else"}],"updates":[{"name":"The Start of Website","filename":"The Start of Website.md","title":"The Start","date":"2026-07-14","tags":[],"featured":false,"excerpt":"So this is the start of my journey of wirting i have wanted to be a writer for long time and hopefully i will be able to write and publish a story after this","cover":null,"body":"So this is the start of my journey of wirting i have wanted to be a writer for long time and hopefully i will be able to write and publish a story after this"}],"categories":{"Novel":[{"type":"story","name":"Project Library","title":"Project Library"},{"type":"story","name":"The Murder of Mr Tyagi","title":"The Murder of Mr Tyagi"}],"Fiction":[{"type":"story","name":"Project Library","title":"Project Library"},{"type":"story","name":"The Murder of Mr Tyagi","title":"The Murder of Mr Tyagi"}],"LGBTQ":[{"type":"story","name":"Project Library","title":"Project Library"}],"Murder Mystery":[{"type":"story","name":"The Murder of Mr Tyagi","title":"The Murder of Mr Tyagi"}]}}
+</script>
+
+<script>
+(function () {
+    'use strict';
+
+    var DATA = null;
+    var updatesLoaded = 0;
+    var UPDATES_PER_BATCH = 3;
+    var currentReaderItem = null;
+
+    function parseInlineMarkdown(text) {
+        if (!text) return text;
+        text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+        text = text.replace(/\*\*([^\s](?:.*?[^\s])?)\*\*/g, '<strong>$1</strong>');
+        text = text.replace(/\*([^\s*](?:[^\*]*?[^\s*])?)\*/g, '<em>$1</em>');
+        text = text.replace(/_([^\s_](?:[^_]*?[^\s_])?)_/g, '<em>$1</em>');
+        text = text.replace(/==([^\s=](?:[^=]*?[^\s=])?)==/g, '<mark>$1</mark>');
+        text = text.replace(/~~([^\s~](?:[^~]*?[^\s~])?)~~/g, '<del>$1</del>');
+        return text;
+    }
+
+    function init() {
+        try {
+            DATA = JSON.parse(document.getElementById('siteData').textContent);
+        } catch (e) {
+            DATA = { stories: [], updates: [], categories: {} };
+        }
+        setupNavigation();
+        handleHashChange();
+        renderHome();
+        renderWritings();
+        renderAbout();
+    }
+
+    function setupNavigation() {
+        window.addEventListener('hashchange', handleHashChange);
+        document.getElementById('menuBtn').addEventListener('click', function () {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+        var links = document.querySelectorAll('#navLinks a');
+        for (var i = 0; i < links.length; i++) {
+            links[i].addEventListener('click', function () {
+                document.getElementById('navLinks').classList.remove('open');
+            });
+        }
+        document.getElementById('readerClose').addEventListener('click', closeReader);
+        document.getElementById('readerOverlay').addEventListener('click', function (e) {
+            if (e.target === e.currentTarget) closeReader();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeReader();
+        });
+        
+        
+        document.getElementById('readerOverlay').addEventListener('scroll', function (e) {
+            if (!currentReaderItem || currentReaderItem.type !== 'story') return;
+            var overlay = e.target;
+            localStorage.setItem('readPos_' + currentReaderItem.name, overlay.scrollTop);
+            
+            var maxScroll = overlay.scrollHeight - overlay.clientHeight;
+            if (maxScroll > 0) {
+                var pct = Math.round((overlay.scrollTop / maxScroll) * 100);
+                localStorage.setItem('readPct_' + currentReaderItem.name, pct);
+            }
+        });
+    }
+
+    function handleHashChange() {
+        var hash = (location.hash || '#home').replace('#', '');
+        navigate(hash, false);
+    }
+
+    window.navigate = function (page, pushHash) {
+        if (pushHash === undefined) pushHash = true;
+        if (pushHash) location.hash = page;
+
+        var pages = document.querySelectorAll('.page');
+        for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active');
+        var target = document.getElementById('page-' + page);
+        if (target) {
+            target.classList.add('active');
+            target.style.animation = 'none';
+            void target.offsetHeight;
+            target.style.animation = '';
+        }
+
+        var navLinks = document.querySelectorAll('.nav-links a');
+        for (var j = 0; j < navLinks.length; j++) {
+            if (navLinks[j].getAttribute('data-page') === page) {
+                navLinks[j].classList.add('active');
+            } else {
+                navLinks[j].classList.remove('active');
+            }
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (page === 'updates' && updatesLoaded === 0) loadUpdates();
+    };
+
+    // --- HOME ---
+    function renderHome() {
+        if (!DATA) return;
+
+        // Featured stories as a list
+        var featured = [];
+        for (var i = 0; i < DATA.stories.length; i++) {
+            var s = DATA.stories[i];
+            var isFeatured = s.featured;
+            if (!isFeatured && s.tags) {
+                for (var t = 0; t < s.tags.length; t++) {
+                    if (s.tags[t].toLowerCase() === 'featured') { isFeatured = true; break; }
+                }
+            }
+            if (isFeatured) featured.push(s);
+        }
+        var fl = document.getElementById('featuredList');
+        if (featured.length) {
+            var h = '';
+            for (var f = 0; f < featured.length; f++) h += listItem(featured[f], f, 'story');
+            fl.innerHTML = h;
+        } else {
+            fl.innerHTML = '<div class="empty-state"><p class="empty-state-text">No featured stories yet.</p></div>';
+        }
+
+        // Latest 3 updates as a list
+        var latest = DATA.updates.slice(0, 3);
+        var ul = document.getElementById('homeUpdatesList');
+        if (latest.length) {
+            var uh = '';
+            for (var u = 0; u < latest.length; u++) uh += listItem(latest[u], u, 'update');
+            ul.innerHTML = uh;
+        } else {
+            ul.innerHTML = '<div class="empty-state"><p class="empty-state-text">No updates yet.</p></div>';
+        }
+    }
+
+    // --- WRITINGS (grouped by tag) ---
+    function renderWritings() {
+        if (!DATA) return;
+
+        // Define the allowed category headings
+        var MAIN_HEADINGS = ['Novel', 'Short Story', 'Short Stories', 'Flash Fiction', 'Novella', 'Poetry', 'Essay'];
+        
+        // Build tag -> stories map (only using main headings)
+        var tagMap = {};
+        var tagOrder = [];
+        
+        for (var i = 0; i < DATA.stories.length; i++) {
+            var story = DATA.stories[i];
+            var categorized = false;
+            
+            for (var t = 0; t < story.tags.length; t++) {
+                var rawTag = story.tags[t];
+                var tag = null;
+                
+                // Check if this tag matches one of our main headings (case-insensitive)
+                for (var h = 0; h < MAIN_HEADINGS.length; h++) {
+                    if (MAIN_HEADINGS[h].toLowerCase() === rawTag.toLowerCase()) {
+                        tag = MAIN_HEADINGS[h];
+                        break;
+                    }
+                }
+                
+                if (tag) {
+                    categorized = true;
+                    if (!tagMap[tag]) {
+                        tagMap[tag] = [];
+                        tagOrder.push(tag);
+                    }
+                    // Avoid duplicates if a story appears multiple times
+                    var found = false;
+                    for (var d = 0; d < tagMap[tag].length; d++) {
+                        if (tagMap[tag][d].name === story.name) { found = true; break; }
+                    }
+                    if (!found) tagMap[tag].push(story);
+                }
+            }
+            
+            // If the story didn't have any of the main heading tags, put it in 'Other'
+            if (!categorized) {
+                var fallbackTag = 'Other';
+                if (!tagMap[fallbackTag]) {
+                    tagMap[fallbackTag] = [];
+                    tagOrder.push(fallbackTag);
+                }
+                tagMap[fallbackTag].push(story);
+            }
+        }
+
+        var container = document.getElementById('writingsByCategory');
+        var html = '';
+        for (var c = 0; c < tagOrder.length; c++) {
+            var catTag = tagOrder[c];
+            var stories = tagMap[catTag];
+            html += '<div class="category-group">';
+            html += '<h3 class="category-heading">' + catTag + '</h3>';
+            html += '<div class="item-list">';
+            for (var s = 0; s < stories.length; s++) {
+                html += listItem(stories[s], s, 'story');
+            }
+            html += '</div></div>';
+        }
+        container.innerHTML = html;
+    }
+
+    // --- UPDATES (lazy) ---
+    function loadUpdates() {
+        var list = document.getElementById('updatesFullList');
+        var skeletons = document.getElementById('updateSkeletons');
+        var wrap = document.getElementById('loadMoreWrap');
+        var total = DATA.updates.length;
+
+        var sk = '';
+        for (var s = 0; s < UPDATES_PER_BATCH; s++) sk += '<div class="skeleton skeleton-update"></div>';
+        skeletons.innerHTML = sk;
+
+        setTimeout(function () {
+            skeletons.innerHTML = '';
+            appendUpdates(list);
+            if (updatesLoaded < total) wrap.style.display = '';
+        }, 400);
+
+        document.getElementById('loadMoreBtn').addEventListener('click', function () {
+            var rem = Math.min(UPDATES_PER_BATCH, total - updatesLoaded);
+            var sk2 = '';
+            for (var r = 0; r < rem; r++) sk2 += '<div class="skeleton skeleton-update"></div>';
+            skeletons.innerHTML = sk2;
+            setTimeout(function () {
+                skeletons.innerHTML = '';
+                appendUpdates(list);
+                if (updatesLoaded >= total) wrap.style.display = 'none';
+            }, 400);
+        });
+    }
+
+    function appendUpdates(container) {
+        var batch = DATA.updates.slice(updatesLoaded, updatesLoaded + UPDATES_PER_BATCH);
+        for (var i = 0; i < batch.length; i++) {
+            var div = document.createElement('div');
+            div.innerHTML = listItem(batch[i], i, 'update');
+            container.appendChild(div.firstElementChild);
+        }
+        updatesLoaded += batch.length;
+    }
+
+    // --- ABOUT ---
+    function renderAbout() {
+        if (!DATA) return;
+        var cc = 0;
+        for (var k in DATA.categories) { if (DATA.categories.hasOwnProperty(k)) cc++; }
+        document.getElementById('aboutStats').innerHTML =
+            '<div class="about-stat"><div class="about-stat-number">' + DATA.stories.length + '</div><div class="about-stat-label">Stories</div></div>' +
+            '<div class="about-stat"><div class="about-stat-number">' + DATA.updates.length + '</div><div class="about-stat-label">Updates</div></div>' +
+            '<div class="about-stat"><div class="about-stat-number">' + cc + '</div><div class="about-stat-label">Categories</div></div>';
+    }
+
+    // --- LIST ITEM (shared for stories & updates) ---
+    function listItem(item, index, type) {
+        var date = item.date ? formatDate(item.date) : '';
+        var delay = index * 80;
+        var onclick = type === 'story'
+            ? ' onclick="openReader(\'' + item.name + '\', \'story\')"'
+            : ' onclick="openReader(\'' + item.name + '\', \'update\')"';
+        var badge = item.featured ? '<span class="list-item-badge">Featured</span>' : '';
+
+        var readProgress = '';
+        var pctText = '';
+        if (type === 'story') {
+            var pct = localStorage.getItem('readPct_' + item.name);
+            if (pct && parseInt(pct, 10) > 0) {
+                pctText = parseInt(pct, 10) >= 99 ? 'Read' : pct + '% read';
+            }
+            readProgress = '<span class="list-item-badge read-progress-badge" data-story="' + item.name + '" style="background: transparent; border-color: var(--text-muted); color: var(--text-muted);' + (pctText ? '' : 'display:none;') + '">' + pctText + '</span>';
+        }
+
+        return '<div class="list-item" style="animation-delay:' + delay + 'ms"' + onclick + '>' +
+            '<div class="list-item-date">' + date + '</div>' +
+            '<div class="list-item-title">' + item.title + badge + readProgress + '</div>' +
+            '<div class="list-item-excerpt">' + item.excerpt + '</div>' +
+            '</div>';
+    }
+
+    // --- READER (works for both stories and updates) ---
+    window.openReader = function (name, type) {
+        var source = type === 'story' ? DATA.stories : DATA.updates;
+        var item = null;
+        for (var i = 0; i < source.length; i++) {
+            if (source[i].name === name) { item = source[i]; break; }
+        }
+        if (!item) return;
+
+        currentReaderItem = { name: name, type: type };
+
+        document.getElementById('readerTitle').textContent = item.title;
+
+        // Calculate read time (approx 200 words per min)
+        var wordCount = item.body.split(/\s+/).length;
+        var readTime = Math.max(1, Math.ceil(wordCount / 200));
+
+        document.getElementById('readerMeta').innerHTML =
+            '<span class="list-item-date" style="margin-bottom:0">' + (item.date ? formatDate(item.date) + ' &nbsp;&bull;&nbsp; ' : '') + readTime + ' min read &nbsp;&bull;&nbsp; ' + wordCount + ' words</span>';
+
+        var lines = item.body.split('\n');
+        var bodyHtml = '';
+        var currentP = [];
+        var tocHtml = '';
+        var headingCount = 0;
+        
+        for (var l = 0; l < lines.length; l++) {
+            var line = lines[l].trim();
+            if (!line) {
+                if (currentP.length) {
+                    bodyHtml += '<p>' + parseInlineMarkdown(currentP.join(' ')) + '</p>';
+                    currentP = [];
+                }
+                continue;
+            }
+            
+            var hMatch = line.match(/^(#{1,6})\s+(.*)$/);
+            if (hMatch) {
+                if (currentP.length) {
+                    bodyHtml += '<p>' + parseInlineMarkdown(currentP.join(' ')) + '</p>';
+                    currentP = [];
+                }
+                var level = hMatch[1].length;
+                var headingText = parseInlineMarkdown(hMatch[2]);
+                var id = 'heading-' + headingCount++;
+                
+                bodyHtml += '<h' + level + ' id="' + id + '" style="margin-top:2em; margin-bottom:0.6em; font-family:var(--font-display); font-weight:400; line-height:1.2; color:var(--accent); letter-spacing:0.01em;">' + headingText + '</h' + level + '>';
+                
+                tocHtml += '<a href="#' + id + '" class="toc-link toc-level-' + level + '" onclick="event.preventDefault(); document.getElementById(\'' + id + '\').scrollIntoView({behavior: \'smooth\'});">' + headingText + '</a>';
+            } else if (line === '---') {
+                if (currentP.length) {
+                    bodyHtml += '<p>' + parseInlineMarkdown(currentP.join(' ')) + '</p>';
+                    currentP = [];
+                }
+                bodyHtml += '<hr style="margin:2em 0; border:none; border-top:1px solid var(--border-light);">';
+            } else {
+                currentP.push(line);
+            }
+        }
+        if (currentP.length) {
+            bodyHtml += '<p>' + parseInlineMarkdown(currentP.join(' ')) + '</p>';
+        }
+        document.getElementById('readerBody').innerHTML = bodyHtml;
+
+        var tocWrapper = document.getElementById('readerTocContainer');
+        var tocContainer = document.getElementById('readerToc');
+        if (headingCount > 0) {
+            tocContainer.innerHTML = tocHtml;
+            tocWrapper.style.display = 'block';
+        } else {
+            tocContainer.innerHTML = '';
+            tocWrapper.style.display = 'none';
+        }
+
+
+        if (type === 'story') {
+            document.getElementById('readerByline').innerHTML = 'By Joseph Blackwell';
+            document.getElementById('readerByline').style.display = '';
+        } else {
+            document.getElementById('readerByline').style.display = 'none';
+        }
+
+        document.getElementById('readerOverlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        if (type === 'story') {
+            setTimeout(function() {
+                var overlay = document.getElementById('readerOverlay');
+                var savedPos = localStorage.getItem('readPos_' + name);
+                if (savedPos) {
+                    overlay.scrollTop = parseInt(savedPos, 10);
+                } else {
+                    overlay.scrollTop = 0;
+                }
+            }, 10);
+        } else {
+            document.getElementById('readerOverlay').scrollTop = 0;
+        }
+    };
+
+    function closeReader() {
+        document.getElementById('readerOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+        if (currentReaderItem && currentReaderItem.type === 'story') {
+            var pct = localStorage.getItem('readPct_' + currentReaderItem.name);
+            if (pct && parseInt(pct, 10) > 0) {
+                var pctText = parseInt(pct, 10) >= 99 ? 'Read' : pct + '% read';
+                var badges = document.querySelectorAll('.read-progress-badge[data-story="' + currentReaderItem.name + '"]');
+                for (var i = 0; i < badges.length; i++) {
+                    badges[i].textContent = pctText;
+                    badges[i].style.display = '';
+                }
+            }
+        }
+        currentReaderItem = null;
+    }
+
+    function formatDate(str) {
+        var d = new Date(str);
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+
+</body>
+</html>

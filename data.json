@@ -1,0 +1,87 @@
+{
+  "stories": [
+    {
+      "name": "Project Library",
+      "filename": "Project Library.md",
+      "title": "Project Library",
+      "date": "2026-07-14",
+      "tags": [
+        "Novel",
+        "Fiction",
+        "LGBTQ"
+      ],
+      "featured": true,
+      "excerpt": "A LGBTQ+ Story about the love of two girls in a religious state.",
+      "cover": null,
+      "body": "# Comming Feburary 2028 \r\n\r\n---\r\n\r\n© Joseph Blackwell. All rights reserved. This story may not be reproduced, distributed, or transmitted in any form without prior written permission."
+    },
+    {
+      "name": "The Murder of Mr Tyagi",
+      "filename": "The Murder of Mr Tyagi.md",
+      "title": "The Murder of Mr Tyagi",
+      "date": "2026-07-14",
+      "tags": [
+        "Fiction",
+        "Novel",
+        "Murder Mystery"
+      ],
+      "featured": true,
+      "excerpt": "Mr Tyagi get murdererd but who did it and why.",
+      "cover": null,
+      "body": "# Comming in March 2027\r\n\r\n\r\nThe Story is about the murder of Mr Tyagi who gets murderd and the question is who murdered him and why and what for , for money, for love, or something else"
+    }
+  ],
+  "updates": [
+    {
+      "name": "The Start of Website",
+      "filename": "The Start of Website.md",
+      "title": "The Start",
+      "date": "2026-07-14",
+      "tags": [],
+      "featured": false,
+      "excerpt": "So this is the start of my journey of wirting i have wanted to be a writer for long time and hopefully i will be able to write and publish a story after this",
+      "cover": null,
+      "body": "So this is the start of my journey of wirting i have wanted to be a writer for long time and hopefully i will be able to write and publish a story after this"
+    }
+  ],
+  "categories": {
+    "Novel": [
+      {
+        "type": "story",
+        "name": "Project Library",
+        "title": "Project Library"
+      },
+      {
+        "type": "story",
+        "name": "The Murder of Mr Tyagi",
+        "title": "The Murder of Mr Tyagi"
+      }
+    ],
+    "Fiction": [
+      {
+        "type": "story",
+        "name": "Project Library",
+        "title": "Project Library"
+      },
+      {
+        "type": "story",
+        "name": "The Murder of Mr Tyagi",
+        "title": "The Murder of Mr Tyagi"
+      }
+    ],
+    "LGBTQ": [
+      {
+        "type": "story",
+        "name": "Project Library",
+        "title": "Project Library"
+      }
+    ],
+    "Murder Mystery": [
+      {
+        "type": "story",
+        "name": "The Murder of Mr Tyagi",
+        "title": "The Murder of Mr Tyagi"
+      }
+    ]
+  }
+}
